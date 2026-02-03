@@ -1,60 +1,89 @@
-# RSS AI Digest - Automatización de Noticias Tech
+# RSS AI Digest – Automated Tech News Pipeline
 
-¿Qué hace este proyecto?
+An end-to-end automation that collects, summarizes, and delivers the latest tech news using AI.
 
-## Resumen:
-- Lee feeds RSS de sitios tech (Hacker News)
-- Resume cada artículo con IA (Google Gemini)
-- Envía un digest diario con las últimas 5 noticias por email
+## Project Overview
 
-## Stack tecnológico
+- This project automates the process of consuming tech news by:
 
-- **n8n** - Plataforma de automatización
-- **Google Gemini API** - Resúmenes con IA
-- **Gmail** - Envío de emails
-- **RSS Feed** - Fuente de noticias (Hacker News)
+- Fetching articles from RSS feeds (Hacker News)
 
-## Resultado:
+- Generating concise AI-powered summaries using Google Gemini
 
+- Delivering a clean, formatted email digest with the top 5 latest articles
+
+- Built as a fully automated workflow using n8n, this project demonstrates practical AI integration, workflow orchestration, and email automation.
+
+## Tech Stack
+
+- **n8n** – Workflow automation and orchestration
+
+- **Google Gemini API** – AI-based content summarization
+
+- **Gmail** – Automated email delivery
+
+- **RSS Feeds** – News ingestion (Hacker News)
+
+## Output Example
 ![Email recibido](email-resultado.png)
 
-*Email automatizado con las últimas 5 noticias resumidas por IA*
+Automated email digest containing the 5 most recent tech news articles summarized by AI.
 
-## Estructura del workflow
+## Workflow Architecture
 
-1. **Schedule Trigger** - Se ejecuta cada 1 hora
-2. **RSS Feed Read** - Lee Hacker News RSS
-3. **Limit** - Limita a 5 artículos
-4. **Google Gemini** - Resume cada artículo en español
-5. **Code** - Formatea todo en HTML
-6. **Gmail** - Envía el digest
+1. Schedule Trigger – Executes every hour
+
+2. RSS Feed Read – Fetches articles from Hacker News RSS
+
+3. Limit – Restricts processing to the latest 5 items
+
+4. Edit Fields - Organize information 
+
+5. Google Gemini – Generates AI summaries for each article
+
+6. Code – Formats the content into responsive HTML
+
+7. Gmail – Sends the email digest automatically
 
 ![Workflow](workflow-screenshot.png)
 
-## Cómo replicarlo
+## Setup & Replication
 
-1. Ver workflow.json para importar a tu instancia de n8n
-2. Configurar credenciales de Gmail
-3. Obtener API key de Google Gemini (gratis)
-4. Activar el workflow
-5. Recibir noticias automatizadas cada hora
+To run this project in your own environment:
 
-## Casos de uso
+1. Import workflow.json into your n8n instance
 
-- ✅ Digest diario de noticias tech
-- ✅ Monitoreo de blogs de competencia
-- ✅ Curación automática de contenido
-- ✅ Newsletter automatizado para clientes
+2. Configure Gmail credentials
 
-## 📊 Próximas mejoras
+3. Generate a Google Gemini API key (free tier available)
 
-- [ ] Agregar más fuentes RSS
-- [ ] Enviar solo 1 email diario (no cada hora)
-- [ ] Filtrar por keywords específicos
-- [ ] Integración con Slack/Discord
+3. Start receiving automated tech news digests every hour
 
-## 👤 Autor
+## Use Cases
 
-Sebastian - [LinkedIn](#) | [GitHub](https://github.com/sebastian-dev-arg)
+✅ Daily or hourly tech news digest
 
-**Parte de mi portafolio de automatizaciones con n8n**
+✅ Competitor and industry monitoring
+
+✅ Automated content curation
+
+✅ Client or internal newsletters
+
+✅ AI-powered information pipelines
+
+## Planned Improvements
+
+ - [ ] Support for multiple RSS sources
+
+ - [ ] Single daily digest instead of hourly emails
+
+ - [ ] Keyword-based filtering
+
+ - [ ] Slack and Discord integrations
+
+## Author
+
+Sebastian Agustin Saavedra Chavez - [LinkedIn](#)  | [GitHub](https://github.com/sebastian-dev-arg)
+
+
+- Part of my automation and AI workflows portfolio built with n8n
