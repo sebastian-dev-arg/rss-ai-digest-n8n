@@ -1,0 +1,234 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://hnrss.org/newest",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -240
+      ],
+      "id": "69d09beb-e53c-4826-982c-0da5625d199f",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combinar todos los resúmenes con TÍTULO REAL del RSS\nconst items = $input.all();\n\nlet htmlContent = `\n<div style=\"font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;\">\n  <h1 style=\"color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px;\">\n    📰 Últimas 5 Noticias Tech - ${new Date().toLocaleDateString('es-AR')}\n  </h1>\n  <br>\n`;\n\nitems.forEach((item, index) => {\n  // Obtener datos del ITEM ORIGINAL del RSS (antes de la IA)\n  const inputData = $item(index).$node[\"RSS Read\"].json;\n  \n  // Extraer título y link del RSS original\n  const titulo = inputData.title || `Artículo ${index + 1}`;\n  const link = inputData.link || inputData.url || '#';\n  \n  // Extraer el resumen generado por la IA\n  const resumen = item.json.content.parts[0].text;\n  \n  htmlContent += `\n    <div style=\"margin-bottom: 25px; padding: 20px; background: #f9f9f9; border-left: 4px solid #4CAF50; border-radius: 5px;\">\n      <h3 style=\"color: #2c3e50; margin-top: 0;\">\n        ${index + 1}. ${titulo}\n      </h3>\n      <p style=\"color: #555; line-height: 1.6; margin: 10px 0;\">\n        ${resumen}\n      </p>\n      <a href=\"${link}\" style=\"color: #4CAF50; text-decoration: none; font-size: 14px;\" target=\"_blank\">\n        Leer artículo completo →\n      </a>\n    </div>\n  `;\n});\n\nreturn [{ json: { emailContent: htmlContent } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -240
+      ],
+      "id": "632181a5-9660-4e8b-8103-9b27da8c5a38",
+      "name": "Limpiar Informacion"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -288,
+        -240
+      ],
+      "id": "ee07676d-7194-4dc6-9b04-e27c9ce9341d",
+      "name": "Trigger 1 hora"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -240
+      ],
+      "id": "bc0e637e-ea48-4942-a2c6-139851c5cbe2",
+      "name": "Limite"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6e402ae2-6963-4291-833e-86a3a843237c",
+              "name": "rrsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "6abf1d89-3bdd-4ae4-94c5-9187f332c4f1",
+              "name": "rrsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "7e8e918e-0446-469d-87a7-fdd5a2a6e094",
+              "name": "rssContent",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        384,
+        -240
+      ],
+      "id": "7b61207a-77e6-4c69-a33b-9afac52e72ca",
+      "name": "Manipular informacion"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-lite-preview-09-2025",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-lite-preview-09-2025"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Resume SOLO el contenido de este artículo en máximo 3 oraciones en español. NO incluyas el título en tu respuesta, SOLO el resumen del contenido:\n\n{{ $json.rssContent }}\n\nResponde ÚNICAMENTE con el resumen, sin incluir el título del artículo."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        -240
+      ],
+      "id": "649144d1-8404-4f10-893e-378d0cba0b13",
+      "name": "Inteligencia Artificial (Resumen)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DMjbOdJ2F1dR09vi",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "saavedrachavezsebastianagustin@gmail.com",
+        "subject": "¡Noticias de Tecnología de ULTIMO MOMENTO!",
+        "message": "={{ $json.emailContent }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1184,
+        -240
+      ],
+      "id": "6b401f41-3230-4347-9367-f29bbbb141ab",
+      "name": "Gmail",
+      "webhookId": "c2d07c2f-c09b-4c89-8868-b6582f97094a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "jBzhh26HpBeCvAZ9",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar Informacion": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger 1 hora": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limite": {
+      "main": [
+        [
+          {
+            "node": "Manipular informacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manipular informacion": {
+      "main": [
+        [
+          {
+            "node": "Inteligencia Artificial (Resumen)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inteligencia Artificial (Resumen)": {
+      "main": [
+        [
+          {
+            "node": "Limpiar Informacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3e8ed0dd574aa7b50d3d45a6bf6cc2f67db82f2b9c495a5e67721e438ac42c4"
+  }
+}
