@@ -2,25 +2,25 @@
 
 ¿Qué hace este proyecto?
 
-Resumen:
+## Resumen:
 - Lee feeds RSS de sitios tech (Hacker News)
 - Resume cada artículo con IA (Google Gemini)
 - Envía un digest diario con las últimas 5 noticias por email
 
-Stack tecnológico
+## Stack tecnológico
 
 - **n8n** - Plataforma de automatización
 - **Google Gemini API** - Resúmenes con IA
 - **Gmail** - Envío de emails
 - **RSS Feed** - Fuente de noticias (Hacker News)
 
-Resultado
+## Resultado:
 
 ![Email recibido](email-resultado.png)
 
 *Email automatizado con las últimas 5 noticias resumidas por IA*
 
-Estructura del workflow
+## Estructura del workflow
 
 1. **Schedule Trigger** - Se ejecuta cada 1 hora
 2. **RSS Feed Read** - Lee Hacker News RSS
@@ -31,7 +31,7 @@ Estructura del workflow
 
 ![Workflow](workflow-screenshot.png)
 
-Cómo replicarlo
+## Cómo replicarlo
 
 1. Importar el workflow a tu instancia de n8n
 2. Configurar credenciales de Gmail
@@ -39,7 +39,7 @@ Cómo replicarlo
 4. Activar el workflow
 5. Recibir noticias automatizadas cada hora
 
-Casos de uso
+## Casos de uso
 
 - ✅ Digest diario de noticias tech
 - ✅ Monitoreo de blogs de competencia
