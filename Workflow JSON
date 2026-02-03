@@ -129,7 +129,7 @@
     },
     {
       "parameters": {
-        "sendTo": "saavedrachavezsebastianagustin@gmail.com",
+        "sendTo": "123@gmail.com",
         "subject": "¡Noticias de Tecnología de ULTIMO MOMENTO!",
         "message": "={{ $json.emailContent }}",
         "options": {
