@@ -1,4 +1,4 @@
-RSS AI Digest - Automatización de Noticias Tech
+# RSS AI Digest - Automatización de Noticias Tech
 
 ¿Qué hace este proyecto?
 
