@@ -33,7 +33,7 @@
 
 ## Cómo replicarlo
 
-1. Importar el workflow a tu instancia de n8n
+1. Ver workflow.json para importar a tu instancia de n8n
 2. Configurar credenciales de Gmail
 3. Obtener API key de Google Gemini (gratis)
 4. Activar el workflow
